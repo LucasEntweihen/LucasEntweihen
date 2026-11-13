@@ -38,9 +38,3 @@
   - [Efficientia/Efficientia-IA-desktop](https://github.com/Efficientia/Efficientia-IA-desktop) — Sistema de IA para desktop com FastAPI, LangGraph e guardrails de segurança.
 
 - [Fluxar-NeoTech](https://github.com/Fluxar-NeoTech) — Aplicação para otimização de trabalho e gestão de estoques industriais.
-
----
-
-## 🐟 Sobre o Tulkun
-
-Procedural pixel-art Tulkun gerado a partir das contribuições do GitHub, com cores das linguagens de programação usadas nos projetos.
