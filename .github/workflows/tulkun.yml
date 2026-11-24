@@ -2,8 +2,8 @@ name: Update Profile Tulkun
 
 on:
   schedule:
-    # Runs every night at 00:15 UTC
-    - cron: "15 0 * * *"
+    # Runs every 30 minutes
+    - cron: "*/30 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
