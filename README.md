@@ -15,6 +15,9 @@
 ## 📊 Commits dos meus projetos
 
 <p align="center">
+  <!-- COMMITS_COUNT_START -->
+  <img src="https://img.shields.io/badge/Total%20Commits-249-39A7FF?style=for-the-badge&logo=github" alt="Total Commits: 249" />
+  <!-- COMMITS_COUNT_END -->
   <a href="https://github.com/LucasEntweihen/oh-my-shark">
     <img src="https://img.shields.io/github/commit-activity/m/LucasEntweihen/oh-my-shark?label=oh-my-shark&color=39A7FF&style=for-the-badge" alt="oh-my-shark commits" />
   </a>
