@@ -16,7 +16,7 @@
 
 <p align="center">
   <!-- COMMITS_COUNT_START -->
-  <img src="https://img.shields.io/badge/Total%20Commits-250-39A7FF?style=for-the-badge&logo=github" alt="Total Commits: 250" />
+  <img src="https://img.shields.io/badge/Total%20Commits-251-39A7FF?style=for-the-badge&logo=github" alt="Total Commits: 251" />
   <!-- COMMITS_COUNT_END -->
   <a href="https://github.com/LucasEntweihen/oh-my-shark">
     <!-- SHARK_COMMITS_START -->
