@@ -53,15 +53,17 @@ def paginate(url: str) -> list[dict]:
     return results
 
 
-def count_user_repo_branch_commits(username: str) -> int:
+def count_user_repo_branch_commits(username: str) -> tuple[int, dict[str, int]]:
     """Count unique commit SHAs authored by `username` across all branches of their repos."""
     repos = paginate(f"https://api.github.com/users/{username}/repos?per_page=100&type=owner")
     unique_shas: set[str] = set()
+    per_repo_counts: dict[str, int] = {}
 
     for repo in repos:
         full_name = repo.get("full_name")
         if not full_name:
             continue
+        repo_shas: set[str] = set()
         try:
             branches = paginate(f"https://api.github.com/repos/{full_name}/branches?per_page=100")
         except urllib.error.HTTPError:
@@ -82,10 +84,13 @@ def count_user_repo_branch_commits(username: str) -> int:
                     sha = commit.get("sha")
                     if sha:
                         unique_shas.add(sha)
+                        repo_shas.add(sha)
             except urllib.error.HTTPError:
                 continue
 
-    return len(unique_shas)
+        per_repo_counts[full_name] = len(repo_shas)
+
+    return len(unique_shas), per_repo_counts
 
 
 def count_search_commits(username: str) -> int:
@@ -101,26 +106,48 @@ def count_search_commits(username: str) -> int:
     return 0
 
 
-def update_readme(count: int) -> bool:
-    """Update the Total Commits badge in README.md. Returns True if file changed."""
-    with open(README_PATH, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    badge_html = (
-        "<!-- COMMITS_COUNT_START -->\n"
-        f'  <img src="https://img.shields.io/badge/Total%20Commits-{count}-39A7FF?style=for-the-badge&logo=github" alt="Total Commits: {count}" />\n'
-        "  <!-- COMMITS_COUNT_END -->"
-    )
-
+def replace_marker(content: str, marker: str, replacement: str) -> str:
+    """Replace content between <!-- MARKER_START --> and <!-- MARKER_END -->."""
     pattern = re.compile(
-        r"<!-- COMMITS_COUNT_START -->.*?<!-- COMMITS_COUNT_END -->",
+        rf"<!-- {marker}_START -->.*?<!-- {marker}_END -->",
         re.DOTALL,
     )
     if not pattern.search(content):
-        print("Markers COMMITS_COUNT_START / COMMITS_COUNT_END not found in README.md", file=sys.stderr)
-        return False
+        return content
+    return pattern.sub(
+        f"<!-- {marker}_START -->\n  {replacement}\n  <!-- {marker}_END -->",
+        content,
+        count=1,
+    )
 
-    updated = pattern.sub(badge_html, content, count=1)
+
+def update_readme(count: int, per_repo_counts: dict[str, int]) -> bool:
+    """Update the Total Commits and project commit badges in README.md."""
+    with open(README_PATH, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    updated = replace_marker(
+        content,
+        "COMMITS_COUNT",
+        f'<img src="https://img.shields.io/badge/Total%20Commits-{count}-39A7FF?style=for-the-badge&logo=github" alt="Total Commits: {count}" />',
+    )
+
+    shark_count = per_repo_counts.get(f"{USERNAME}/oh-my-shark")
+    if shark_count is not None:
+        updated = replace_marker(
+            updated,
+            "SHARK_COMMITS",
+            f'<img src="https://img.shields.io/badge/oh--my--shark-{shark_count}-39A7FF?style=for-the-badge" alt="oh-my-shark commits: {shark_count}" />',
+        )
+
+    unilog_count = per_repo_counts.get(f"{USERNAME}/Universidade-Log")
+    if unilog_count is not None:
+        updated = replace_marker(
+            updated,
+            "UNILOG_COMMITS",
+            f'<img src="https://img.shields.io/badge/Universidade--Log-{unilog_count}-39A7FF?style=for-the-badge" alt="Universidade-Log commits: {unilog_count}" />',
+        )
+
     if updated == content:
         return False
 
@@ -130,11 +157,11 @@ def update_readme(count: int) -> bool:
 
 
 def main() -> int:
-    repo_branch_count = count_user_repo_branch_commits(USERNAME)
+    repo_branch_count, per_repo_counts = count_user_repo_branch_commits(USERNAME)
     search_count = count_search_commits(USERNAME)
     total = max(repo_branch_count, search_count)
     print(f"Counted commits for {USERNAME}: repos/branches={repo_branch_count}, search={search_count}, total={total}")
-    changed = update_readme(total)
+    changed = update_readme(total, per_repo_counts)
     print("README.md updated." if changed else "README.md already up to date.")
     return 0
 

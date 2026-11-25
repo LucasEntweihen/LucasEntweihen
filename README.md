@@ -16,13 +16,17 @@
 
 <p align="center">
   <!-- COMMITS_COUNT_START -->
-  <img src="https://img.shields.io/badge/Total%20Commits-249-39A7FF?style=for-the-badge&logo=github" alt="Total Commits: 249" />
+  <img src="https://img.shields.io/badge/Total%20Commits-250-39A7FF?style=for-the-badge&logo=github" alt="Total Commits: 250" />
   <!-- COMMITS_COUNT_END -->
   <a href="https://github.com/LucasEntweihen/oh-my-shark">
-    <img src="https://img.shields.io/github/commit-activity/m/LucasEntweihen/oh-my-shark?label=oh-my-shark&color=39A7FF&style=for-the-badge" alt="oh-my-shark commits" />
+    <!-- SHARK_COMMITS_START -->
+  <img src="https://img.shields.io/badge/oh--my--shark-51-39A7FF?style=for-the-badge" alt="oh-my-shark commits: 51" />
+  <!-- SHARK_COMMITS_END -->
   </a>
   <a href="https://github.com/LucasEntweihen/Universidade-Log">
-    <img src="https://img.shields.io/github/commit-activity/m/LucasEntweihen/Universidade-Log?label=Universidade-Log&color=39A7FF&style=for-the-badge" alt="Universidade-Log commits" />
+    <!-- UNILOG_COMMITS_START -->
+  <img src="https://img.shields.io/badge/Universidade--Log-33-39A7FF?style=for-the-badge" alt="Universidade-Log commits: 33" />
+  <!-- UNILOG_COMMITS_END -->
   </a>
 </p>
 
